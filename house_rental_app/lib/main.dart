@@ -10,7 +10,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login/Signup Form',
-      
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+      ),
+      debugShowCheckedModeBanner: false,
       home: LoginPage(),
     
     );
@@ -63,45 +66,129 @@ class _LoginPageState extends State<LoginPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Login'),
-      ),
-      body: Center(
-        child: Column(
+      
+      body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-              TextField(
+          children: [
+            
+            Container(
+               child: 
+               const Text(
+                'Login',
+                style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 35,
+                fontFamily: "TiltNeon-Regular",
+                height: 5)),   
+            ),
+
+            Container(
+              height: 34,
+              width: 400,
+              margin: EdgeInsets.all(16.0),
+              
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(1),
+                    blurRadius: 8.0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+
+            child: TextField(
               controller: emailController,
               decoration: InputDecoration(
                 hintText: 'Email',
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+                prefixIcon: Icon(Icons.person_2, color: Colors.grey),
               ),
             ),
-            TextField(
+          ),
+          
+          Center(
+            child: Container(
+            height: 34,
+            width: 400,
+            margin: EdgeInsets.all(16.0),
+            
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+
+            child: TextField(
               controller: passwordController,
               decoration: InputDecoration(
               hintText: 'Password',
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+              prefixIcon: Icon(Icons.lock, color: Colors.grey),
               ),
               obscureText: true,
             ),
-            ElevatedButton(
-              onPressed: login,
-              child: const Text('Login'),
+          ),
+          ),
+          
+
+          SizedBox(height: 30),
+                     
+          SizedBox(
+            height: 30,
+            width: 400,
+            child: ElevatedButton(
+            onPressed: login,
+            child: const Text(
+              'Login',
+              style: TextStyle(
+                fontWeight: FontWeight.bold),
             ),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
-                );
-              },
-              child: const Text('Sign up'),
+          
+            style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.purple.shade600),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),),
+            ),
+            ),
+            ),
+            ),
+            
+            SizedBox(height: 20),
+            
+            Row(    
+              children: [
+                SizedBox(width:130),
+                Text("Don't have an account? "),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                        MaterialPageRoute(builder: (context) => SignUpPage()),
+                    );
+                  },
+              
+                  child: const Text(
+                    'Sign up',
+                    style: TextStyle(color: Colors.deepPurple),
+                  ),
+                  ),
+              ],
             ),
           ],
-        ),
-      ),
+        ),   
     );
   }
-
 }
 
 class SignUpPage extends StatefulWidget {
@@ -116,7 +203,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future signUp() async {
   
-    
     if(nameController.text!="" && emailController.text!="" && passwordController.text!="")
     {
       try{
@@ -154,45 +240,148 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Sign Up'),
-      ),
+      
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,          
           children: <Widget>[
-            TextField(
-              controller: nameController,
-              decoration: InputDecoration(
+
+            Container(
+               child: 
+                const Text('Sign Up',
+                  style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 35,
+                  fontFamily: "TiltNeon-Regular",
+                  height: 5)),
+            ),
+
+            Container(
+              height: 34,
+              width: 400,
+              margin: EdgeInsets.all(16.0),
+              
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+            
+              boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(1),
+                blurRadius: 8.0,
+                offset: Offset(0, 4),
+              ),
+              ],
+              ),
+
+              child: TextField(
+                controller: nameController,
+                decoration: InputDecoration(
                 hintText: 'Name',
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+                prefixIcon: Icon(Icons.person_2, color: Colors.grey),
+                ),
               ),
-            ),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                hintText: 'Email',
-              ),
-            ),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                hintText: 'Password',
-              ),
-              obscureText: true,
-            ),
-            ElevatedButton(
-              onPressed: signUp,
-              child: Text('Sign Up'),
             ),
 
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Back to login'),
+            Container(
+              height: 34,
+              width: 400,
+              margin: EdgeInsets.all(16.0),
+            
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  blurRadius: 8.0,
+                  offset: Offset(0, 4),
+                ),
+                ],
+              ),
+
+              child: TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+                prefixIcon: Icon(Icons.person_2, color: Colors.grey),
+                ),
+              ),
+          ),
+
+
+          Center(
+            child: Container(
+              height: 34,
+              width: 400,
+              margin: EdgeInsets.all(16.0),
+
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(1),
+                    blurRadius: 8.0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+
+                child: TextField(
+                  controller: passwordController,
+                  decoration: InputDecoration(
+                  hintText: 'Password',
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+                  prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                  ),
+                  obscureText: true,
+                ),
+            ),
+          ),
+
+          SizedBox(height: 30),
+
+          SizedBox(
+            height: 30,
+            width: 400,
+            
+            child: ElevatedButton(
+            onPressed: signUp,
+            child: const Text(
+              'Sign Up',
+              style: TextStyle(
+                fontWeight: FontWeight.bold),
             ),
 
-          ],
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.purple.shade600),
+              foregroundColor: MaterialStateProperty.all(Colors.white),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                ),
+              ),
+            ),
+            ),
+            ),
+
+          SizedBox(height: 20,),
+
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            
+            child: Text(
+                'Back to login',
+                style: TextStyle(color: Colors.deepPurple
+                ),
+            ),
+          ),
+
+        ],
         ),
       ),
     );

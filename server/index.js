@@ -68,6 +68,38 @@ app.post('/login', (req, res) => {										// Authorize username and password f
   });
 			
 
+  app.post('/search', (req, res) => {										// Authorize username and password for login
+	
+    const loc = req.body.location;
+    const rent = parseInt(req.body.rent);
+    const amList = JSON.parse(req.body.amenitiesList);
+
+    const sql = `SELECT * FROM propertyDetails WHERE location LIKE '%${loc}%' AND rent <= ${rent}`;
+    console.log(amList);
+  // AND amenities LIKE (CASE WHEN '${su}' ='True' THEN '%geyser%' ELSE '%%' END)
+      connection.query(sql, [loc, rent], (err, results) => {
+        if (err) throw err;
+        
+        if(results.length > 0) {
+          res.json({
+            success: true,
+            message: 'Data fetched',
+            results
+          });
+          console.log(loc);
+          console.log(rent);
+        }
+        
+        else {
+          res.json({
+            success: false,
+            message: 'error or empty database',
+          });
+        }
+      });
+    });
+
+
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
