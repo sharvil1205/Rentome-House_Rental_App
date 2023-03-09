@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:house_rental_app/TenantHomePage.dart';
+import 'package:house_rental_app/LandlordHomePage.dart';
 
+String uname = "";
+int uid=0;
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -46,8 +49,10 @@ class _LoginPageState extends State<LoginPage>{
         var response = jsonDecode(res.body);
         if(response['success'] == true){
           print("logged in");
-          print(response['message']);
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TenantHomePage()));
+
+          uname = emailController.text;
+          if(response['type'] == 'Tenant') Navigator.push(context, MaterialPageRoute(builder: (context) => TenantHomePage()));
+          else  Navigator.push(context, MaterialPageRoute(builder: (context) => LandlordHomePage()));
 
         }
         else if(response['success'] == false){
@@ -85,7 +90,7 @@ class _LoginPageState extends State<LoginPage>{
             Container(
               height: 34,
               width: 400,
-              margin: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
               
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -95,14 +100,14 @@ class _LoginPageState extends State<LoginPage>{
                   BoxShadow(
                     color: Colors.grey.withOpacity(1),
                     blurRadius: 8.0,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
 
             child: TextField(
               controller: emailController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
                 prefixIcon: Icon(Icons.person_2, color: Colors.grey),
@@ -114,7 +119,7 @@ class _LoginPageState extends State<LoginPage>{
             child: Container(
             height: 34,
             width: 400,
-            margin: EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(16.0),
             
             decoration: BoxDecoration(
               color: Colors.white,
@@ -123,14 +128,14 @@ class _LoginPageState extends State<LoginPage>{
                 BoxShadow(
                   color: Colors.grey.withOpacity(1),
                   blurRadius: 8.0,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
 
             child: TextField(
               controller: passwordController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
               hintText: 'Password',
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
               prefixIcon: Icon(Icons.lock, color: Colors.grey),
@@ -141,18 +146,13 @@ class _LoginPageState extends State<LoginPage>{
           ),
           
 
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
                      
           SizedBox(
             height: 30,
             width: 400,
             child: ElevatedButton(
             onPressed: login,
-            child: const Text(
-              'Login',
-              style: TextStyle(
-                fontWeight: FontWeight.bold),
-            ),
           
             style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.purple.shade600),
@@ -161,17 +161,23 @@ class _LoginPageState extends State<LoginPage>{
               borderRadius: BorderRadius.circular(6),),
             ),
             ),
+            child: const Text(
+              'Login',
+              style: TextStyle(
+                fontWeight: FontWeight.bold),
+            ),
             ),
             ),
             
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             
             Row(    
               children: [
-                SizedBox(width:130),
-                Text("Don't have an account? "),
+                const SizedBox(width:130),
+                const Text("Don't have an account? "),
                 TextButton(
                   onPressed: () {
+
                     Navigator.push(
                       context,
                         MaterialPageRoute(builder: (context) => SignUpPage()),
@@ -197,6 +203,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  bool _isTenantChecked = false;
+  bool _isLandlordChecked = false;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -206,18 +214,25 @@ class _SignUpPageState extends State<SignUpPage> {
     if(nameController.text!="" && emailController.text!="" && passwordController.text!="")
     {
       try{
+        bool tl = false;
+        if(_isTenantChecked) tl = true;
+
         String uri = 'http://localhost:3000/signup';
 
         var res = await http.post(Uri.parse(uri), body: {
           "name": nameController.text,
           "email": emailController.text,
-          "password": passwordController.text
+          "password": passwordController.text,
+          "tenant": tl.toString()
         });
 
         var response = jsonDecode(res.body);
         if(response['success'] == true){
           print("record inserted");
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TenantHomePage()));
+        
+          uname = emailController.text;
+          if(response['type'] == 'Tenant') Navigator.push(context, MaterialPageRoute(builder: (context) => TenantHomePage()));
+          else Navigator.push(context, MaterialPageRoute(builder: (context) => LandlordHomePage()));
 
         }
         else if(response['success'] == false){
@@ -259,7 +274,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Container(
               height: 34,
               width: 400,
-              margin: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
               
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -269,14 +284,14 @@ class _SignUpPageState extends State<SignUpPage> {
               BoxShadow(
                 color: Colors.grey.withOpacity(1),
                 blurRadius: 8.0,
-                offset: Offset(0, 4),
+                offset: const Offset(0, 4),
               ),
               ],
               ),
 
               child: TextField(
                 controller: nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                 hintText: 'Name',
                 contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
                 prefixIcon: Icon(Icons.person_2, color: Colors.grey),
@@ -287,7 +302,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Container(
               height: 34,
               width: 400,
-              margin: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
             
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -296,14 +311,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 BoxShadow(
                   color: Colors.grey.withOpacity(1),
                   blurRadius: 8.0,
-                  offset: Offset(0, 4),
+                  offset: const Offset(0, 4),
                 ),
                 ],
               ),
 
               child: TextField(
                 controller: emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Email',
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
                 prefixIcon: Icon(Icons.person_2, color: Colors.grey),
@@ -316,7 +331,7 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Container(
               height: 34,
               width: 400,
-              margin: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.all(16.0),
 
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -325,14 +340,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   BoxShadow(
                     color: Colors.grey.withOpacity(1),
                     blurRadius: 8.0,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),
 
                 child: TextField(
                   controller: passwordController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                   hintText: 'Password',
                   contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
                   prefixIcon: Icon(Icons.lock, color: Colors.grey),
@@ -341,20 +356,35 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
             ),
           ),
-
-          SizedBox(height: 30),
-
+        
+          const SizedBox(height: 30),
+          CheckboxListTile(
+              title: const Text('Tenant'),
+              value: _isTenantChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  _isTenantChecked = value!;
+                  _isLandlordChecked = false;
+                });
+              },
+            ),
+            CheckboxListTile(
+              title: const Text('Landlord'),
+              value: _isLandlordChecked,
+              onChanged: (bool? value) {
+                setState(() {
+                  _isLandlordChecked = value!;
+                  _isTenantChecked = false;
+                });
+              },
+            ),
+            const SizedBox(height: 30),
           SizedBox(
             height: 30,
             width: 400,
             
             child: ElevatedButton(
             onPressed: signUp,
-            child: const Text(
-              'Sign Up',
-              style: TextStyle(
-                fontWeight: FontWeight.bold),
-            ),
 
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(Colors.purple.shade600),
@@ -364,17 +394,22 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            child: const Text(
+              'Sign Up',
+              style: TextStyle(
+                fontWeight: FontWeight.bold),
+            ),
             ),
             ),
 
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
 
           TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             
-            child: Text(
+            child: const Text(
                 'Back to login',
                 style: TextStyle(color: Colors.deepPurple
                 ),

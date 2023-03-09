@@ -25,8 +25,14 @@ app.post('/signup', (req, res) => {
   const name = req.body.name;
   const email = req.body.email;
   const password = req.body.password;
-  const sql = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-  connection.query(sql, [name, email, password], (err, result) => {
+  const type = req.body.tenant;
+  var type1 = '';
+  if(type === "true") type1 = 'Tenant';
+  else type1 = 'Landlord';
+
+  const sql = 'INSERT INTO users (name, email, password, type) VALUES (?, ?, ?, ?)';
+  connection.query(sql, [name, email, password, type1], (err, result) => {
+    
     if (err) {
       res.json({
         success: false,
@@ -36,6 +42,7 @@ app.post('/signup', (req, res) => {
       res.json({
         success: true,
         message: 'User successfully registered',
+        type: type1,
       });
     }
   });
@@ -49,13 +56,30 @@ app.post('/login', (req, res) => {										// Authorize username and password f
 	const sql = 'SELECT * FROM users WHERE email = ? AND password = ?';
 
 		connection.query(sql, [email, password], (err, results) => {
-			if (err) throw err;
+			
+      if (err) throw err;
       
       if(results.length > 0) {
-        res.json({
-          success: true,
-          message: 'User successfully logged in',
-        });
+
+        connection.query('SELECT type from users WHERE email = ?', [email],(err, result) => {
+          console.log(result[0]['type']);
+          if(err) throw err;
+          if(result.length>0 && result[0]['type'] == 'Tenant') {
+            res.json({
+            success: true,
+            message: 'User successfully logged in',
+            type: 'Tenant',
+            });
+          }
+
+          else if(result.length>0 && result[0]['type'] == 'Landlord') {
+            res.json({
+            success: true,
+            message: 'User successfully logged in',
+            type: 'Landlord',
+            });
+          }
+        })
       }
       
       else {
@@ -76,7 +100,7 @@ app.post('/login', (req, res) => {										// Authorize username and password f
 
     const sql = `SELECT * FROM propertyDetails WHERE location LIKE '%${loc}%' AND rent <= ${rent}`;
     console.log(amList);
-  // AND amenities LIKE (CASE WHEN '${su}' ='True' THEN '%geyser%' ELSE '%%' END)
+  // AND (select amenities.amenity from property INNER JOIN amenities ON property.id = amenities.id) IN amList
       connection.query(sql, [loc, rent], (err, results) => {
         if (err) throw err;
         
@@ -86,8 +110,6 @@ app.post('/login', (req, res) => {										// Authorize username and password f
             message: 'Data fetched',
             results
           });
-          console.log(loc);
-          console.log(rent);
         }
         
         else {
@@ -99,6 +121,109 @@ app.post('/login', (req, res) => {										// Authorize username and password f
       });
     });
 
+
+    app.post('/list', (req, res) => {
+      const loc = req.body.location;
+      const rent = req.body.rent;
+      const size = req.body.size;
+      const amList = req.body.amenitiesList;
+      const uname = req.body.uname;
+      
+      console.log(rent);
+      console.log(amList);
+      const sql = 'INSERT INTO propertyDetails (location, rent, size, amenities, username) VALUES (?, ?, ?, ?, ?)';
+      connection.query(sql, [loc, rent, size, amList, uname], (err, result) => {
+        console.log(result);
+        if (err) {
+          res.json({
+            success: false,
+            message: 'Error inserting user into database',
+          });
+        } else {
+          res.json({
+            success: true,
+            message: 'User successfully registered',
+          });
+        }
+      });
+    });
+
+
+    app.post('/propList', (req, res) => {										// Authorize username and password for login
+	
+      const uname = req.body.uname;
+  
+      const sql = `SELECT * FROM propertyDetails WHERE username =  '${uname}'`;
+
+        connection.query(sql, (err, results) => {
+          if (err) throw err;
+          
+          if(results.length > 0) {
+            res.json({
+              success: true,
+              message: 'Data fetched',
+              results
+            });
+          }
+          
+          else {
+            res.json({
+              success: false,
+              message: 'error or empty database',
+            });
+          }
+        });
+      });
+
+      app.post('/track', (req, res) => {										// Authorize username and password for login
+	
+        const uname = req.body.landlordUsername;
+    
+        const sql = `SELECT * FROM rentalRequests WHERE landlordUsername =  '${uname}'`;
+  
+          connection.query(sql, (err, results) => {
+            if (err) throw err;
+            
+            if(results.length > 0) {
+              res.json({
+                success: true,
+                message: 'Data fetched',
+                results
+              });
+            }
+            
+            else {
+              res.json({
+                success: false,
+                message: 'error or empty database',
+              });
+            }
+          });
+        });
+
+
+      app.post('/apply', (req, res) => {
+        const tname = req.body.tenantUsername;
+        const propID = req.body.propertyID;
+        const lname = req.body.landlordUsername;
+        
+        console.log(propID);
+        const sql = 'INSERT INTO rentalRequests (tenantUsername, propertyID, landlordUsername) VALUES (?, ?, ?)';
+        connection.query(sql, [tname, propID, lname], (err, result) => {
+          console.log(result);
+          if (err) {
+            res.json({
+              success: false,
+              message: 'Error inserting user into database',
+            });
+          } else {
+            res.json({
+              success: true,
+              message: 'Applied to property',
+            });
+          }
+        });
+      });
 
 
 app.listen(3000, () => {

@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:house_rental_app/HouseSearchPage.dart';
-
+import 'package:house_rental_app/TenantProfilePage.dart';
 
 
 class TenantHomePage extends StatefulWidget {
@@ -14,7 +14,12 @@ class TenantHomePage extends StatefulWidget {
 class _TenantHomePageState extends State<TenantHomePage> {
   int _selectedIndex = 0;
 
-  List<Widget> _widgetOptions = <Widget>[MyHome(),  UserProfile(),  HouseSearchPage(),       Chat(),    Notifications(),  ];
+  final List<Widget> _widgetOptions = <Widget>[MyHome(),  const TenantProfilePage(
+  name: 'John Doe',
+  profilePictureUrl: 'images/ryuk.webp',
+  email: 'johndoe@example.com',
+  isEmployed: true,
+),  const HouseSearchPage(),       const Chat(),    const Notifications(),  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -81,7 +86,7 @@ class MyHome extends StatelessWidget {
       body: Column(
         children: [
           Row(
-            children: [
+            children: const [
               Icon(
                 Icons.location_on,
               ),
@@ -97,7 +102,7 @@ class MyHome extends StatelessWidget {
             
           ),
 
-          Text('\n\nHello, username\n'),
+          const Text('\n\nHello, username\n'),
 
           const Text(
             'Find your best rental home',
@@ -111,7 +116,7 @@ class MyHome extends StatelessWidget {
                 Container(
             height: 34,
             width: 400,
-            margin: EdgeInsets.all(16.0),
+            margin: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
             
             color: Colors.white,
@@ -121,7 +126,7 @@ class MyHome extends StatelessWidget {
           BoxShadow(
             color: Colors.grey.withOpacity(1),
             blurRadius: 8.0,
-            offset: Offset(0, 4),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -155,47 +160,47 @@ class MyHome extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(6.0),
             child: ElevatedButton(onPressed: (){
-          }, 
-          child: const Text('House'),
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blueGrey.shade100),
             foregroundColor: MaterialStateProperty.all(Colors.black),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
             ))
-          ),
+          ), 
+          child: const Text('House'),
           ),),
           
           
           Padding(
-            padding: EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(6.0),
             child: ElevatedButton(onPressed: (){
-          }, 
-          
-          child: const Text('Bunglow'),
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blueGrey.shade100),
             foregroundColor: MaterialStateProperty.all(Colors.black),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
             ))
-          ),
+          ), 
+          
+          child: const Text('Bunglow'),
           ),),
 
           
           Padding(
-            padding: EdgeInsets.all(6.0),
+            padding: const EdgeInsets.all(6.0),
             child: ElevatedButton(onPressed: (){
-          }, 
-          
-          child: const Text('Flat'),
+          },
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.blueGrey.shade100),
             foregroundColor: MaterialStateProperty.all(Colors.black),
             shape: MaterialStateProperty.all(RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
             ))
-          ),
+          ), 
+          
+          child: const Text('Flat'),
           ),),
           ],
           ),
@@ -218,7 +223,7 @@ class MyHome extends StatelessWidget {
         itemCount: 4,
         itemBuilder: (BuildContext context, int index) {
           return Padding(
-            padding: EdgeInsets.all(18.0),
+            padding: const EdgeInsets.all(18.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.asset(
@@ -240,25 +245,15 @@ class MyHome extends StatelessWidget {
   }
 }
 
-class UserProfile extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text(
-          'User Profile',
-          style: TextStyle(fontSize: 30),
-        ),
-      ),
-    );
-  }
-}
+
 
 class Chat extends StatelessWidget {
+  const Chat({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
+      child: const Center(
         child: Text(
           'Chat',
           style: TextStyle(fontSize: 30),
@@ -269,10 +264,12 @@ class Chat extends StatelessWidget {
 }
 
 class Notifications extends StatelessWidget {
+  const Notifications({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Center(
+      child: const Center(
         child: Text(
           'Notifications',
           style: TextStyle(fontSize: 30,

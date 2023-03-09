@@ -1,10 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:house_rental_app/main.dart';
+import 'package:house_rental_app/viewProperties.dart';
 import 'package:http/http.dart' as http;
 
 
 class HouseSearchPage extends StatefulWidget {
+  const HouseSearchPage({super.key});
+
   @override
   _HouseSearchPageState createState() => _HouseSearchPageState();
 }
@@ -23,9 +26,9 @@ class _HouseSearchPageState extends State<HouseSearchPage> {
     'Pet-friendly',
     'Furnished',
   ];
-
+  late Map<String, dynamic> data;
   Future search(String locationQuery, int rentBudget, List<String> amenitiesList) async{
-    print(locationQuery);
+    
     try{
       String uri = 'http://localhost:3000/search';
       
@@ -35,28 +38,24 @@ class _HouseSearchPageState extends State<HouseSearchPage> {
           "amenitiesList": jsonEncode(amenities),
         });
 
-        var response = jsonDecode(res.body);
-      print(response['success']);
-      print(response['results']);
-
+        data = jsonDecode(res.body);
+        
+        return data;
     }
     catch(e){
       print(e);
     }
   }
 
-
-
-  // Build search filter widget
   Widget buildSearchFilterWidget(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Location search field
           TextField(
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Location',
               border: OutlineInputBorder(),
             ),
@@ -66,7 +65,7 @@ class _HouseSearchPageState extends State<HouseSearchPage> {
               });
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
 
           // Rent budget slider
           Text('Rent Budget: \$${rentBudget.toString()}'),
@@ -81,10 +80,10 @@ class _HouseSearchPageState extends State<HouseSearchPage> {
               });
             },
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
 
           // Amenities checkboxes
-          Text('Amenities'),
+          const Text('Amenities'),
           Wrap(
             spacing: 8,
             children: availableAmenities.map((amenity) {
@@ -112,26 +111,22 @@ class _HouseSearchPageState extends State<HouseSearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('House Rental Search'),
+        title: const Text('House Rental Search'),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             buildSearchFilterWidget(context),
 
-            // Search button
             ElevatedButton(
-              onPressed: () {
-                // Perform search with selected filters
-                
-                print('Performing search with filters:');
-                print('Location: $locationQuery');
-                print('Rent Budget: $rentBudget');
-                print('Amenities: $amenities');
-
-                search(locationQuery, rentBudget, amenities);
+              onPressed: () async {
+                await search(locationQuery, rentBudget, amenities);
+                //print(data['results']);
+              
+                Navigator.push(context, MaterialPageRoute(builder: (context) => viewProperties(data: data)));
               },
-              child: Text('Search'),
+              child: const Text('Search',
+              ),
             ),
           ],
         ),
