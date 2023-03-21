@@ -225,6 +225,48 @@ app.post('/login', (req, res) => {										// Authorize username and password f
         });
       });
 
+      app.post('/properties', (req, res) => {
+    
+        const searchLocation = req.body.location;
+        const searchRent = parseInt(req.body.rent);
+        const searchRadius = req.body.radius;
+        const searchLatitude = parseFloat(req.body.latitude);
+        const searchLongitude = parseFloat(req.body.longitude);
+        const city = req.body.city;
+    
+        console.log(searchLocation);
+        console.log(searchRadius);
+        console.log(searchRent);
+        console.log(searchLatitude);
+        console.log(searchLongitude);
+      
+        // SQL query to search for properties
+        const sql = `
+          SELECT propertyID, city, location, rent, size, amenities, latitude, longitude,
+                 ( 6371 * acos( cos( radians(?) ) * cos( radians( latitude ) )
+                   * cos( radians( longitude ) - radians(?) ) + sin( radians(?) )
+                   * sin( radians( latitude ) ) ) ) AS distance
+          FROM propertyDetails
+          WHERE city LIKE '%${city}%'
+          AND rent <= ?
+          HAVING distance <= ?
+          ORDER BY distance ASC;
+        `;
+        
+        connection.query(sql, [searchLatitude, searchLongitude, searchLatitude, searchRent, searchRadius], (error, results) => {
+          if (error) {
+            res.status(500).json({ error: error.message });
+          } else {
+            console.log(results);
+            
+            res.json({ 
+              results: results,
+            });
+          }
+        });
+      
+      });
+
 
 app.listen(3000, () => {
   console.log('Server listening on port 3000');

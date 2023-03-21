@@ -77,7 +77,6 @@ class _TenantHomePageState extends State<TenantHomePage> {
 }
 
 class MyHome extends StatelessWidget {
-
   List<String> imageNames = ['images/1.jpg', 'images/2.jpg', 'images/3.webp', 'images/4.webp'];
 
   @override
@@ -97,79 +96,73 @@ class MyHome extends StatelessWidget {
               child: Icon(Icons.notifications_sharp,
               size: 30),
               )
-              
             ],
-            
           ),
 
-          const Text('\n\nHello, username\n'),
+          const Text('\n\nHello, John\n'),
 
           const Text(
             'Find your best rental home',
-            style: TextStyle(
-              fontFamily: "TiltNeon-Regular",
-              fontSize: 25),
+              style: TextStyle(
+                fontFamily: "TiltNeon-Regular",
+                fontSize: 25),
               ),
-          
-      
                   
-                Container(
+          Container(
             height: 34,
             width: 400,
             margin: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-            
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10.0),
-            
-            boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(1),
-            blurRadius: 8.0,
-            offset: const Offset(0, 4),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(1),
+                  blurRadius: 8.0,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+
+            child: const TextField(
+              decoration: InputDecoration(
+                hintText: 'Search',
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
+                prefixIcon: Icon(Icons.search, color: Colors.grey),
+              ),
+            ),
           ),
-        ],
-      ),
-
-      child: const TextField(
-        
-        decoration: InputDecoration(
-          hintText: 'Search',
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
-          prefixIcon: Icon(Icons.search, color: Colors.grey),
-        ),
-      ),),
           
-          
-
-            const Text(
+          const Text(
             '\nCategories\n',
-             style: TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontFamily: "TiltNeon-Regular",
               fontWeight: FontWeight.bold,
-             ),
-             ),
+            ),
+          ),
       
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children:[
-          
-          Padding(
-            padding: EdgeInsets.all(6.0),
-            child: ElevatedButton(onPressed: (){
-          },
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.blueGrey.shade100),
-            foregroundColor: MaterialStateProperty.all(Colors.black),
-            shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(6),
-            ))
-          ), 
-          child: const Text('House'),
-          ),),
+              
+              Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: ElevatedButton(onPressed: (){
+              },
+                style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blueGrey.shade100),
+                foregroundColor: MaterialStateProperty.all(Colors.black),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                )
+                )
+              ), 
+                child: const Text('House'),
+                ),
+              ),
           
           
           Padding(

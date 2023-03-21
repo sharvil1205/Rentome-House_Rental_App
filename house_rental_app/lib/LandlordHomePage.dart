@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:house_rental_app/ListProperty.dart';
 import 'package:house_rental_app/ManageProperty.dart';
+import 'package:house_rental_app/LandlordProfile.dart';
 
 class LandlordHomePage extends StatefulWidget {
   @override
@@ -9,7 +11,7 @@ class LandlordHomePage extends StatefulWidget {
 class _LandlordHomePageState extends State<LandlordHomePage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _widgetOptions = <Widget>[LandlordProfile(),  ManageProperty(),    Chat(), Notifications(),  ];
+  final List<Widget> _widgetOptions = <Widget>[const LandlordProfile(),  const ManageProperty(),    const ListProperty(), const Notifications(),  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -39,8 +41,8 @@ class _LandlordHomePageState extends State<LandlordHomePage> {
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.message),
-            label: 'Chat',
+            icon: Icon(Icons.add_business_rounded),
+            label: 'List Property',
             backgroundColor: Colors.black,
           ),
           BottomNavigationBarItem(
@@ -59,40 +61,6 @@ class _LandlordHomePageState extends State<LandlordHomePage> {
   }
 }
 
-class LandlordProfile extends StatelessWidget {
-  const LandlordProfile({super.key});
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text(
-          'Landlord Profile',
-          style: TextStyle(fontSize: 30,
-          
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Chat extends StatelessWidget {
-  const Chat({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text(
-          'Chat',
-          style: TextStyle(fontSize: 30,
-          
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class Notifications extends StatelessWidget {
   const Notifications({super.key});

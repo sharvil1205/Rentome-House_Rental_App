@@ -73,8 +73,13 @@ class _LoginPageState extends State<LoginPage>{
     return Scaffold(
       
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          
           children: [
+            Image.asset(
+              'images/logo.png',
+              width: 280.0,
+                height: 250.0,
+            ),
             
             Container(
                child: 

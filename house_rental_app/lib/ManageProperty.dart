@@ -52,39 +52,66 @@ late Map<String, dynamic> data1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ElevatedButton(
-          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListProperty()));
-          print(uname);
-          }, 
-          child: const Text("List Property")
+  appBar: AppBar(
+    title: const Text('Property Management'),
+  ),
+  body: Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const ListProperty()),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
           ),
-          
-          ElevatedButton(
-          onPressed:  () async{
+          child: const Text(
+            'List Property',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () async {
             await propList();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => viewProperty(data: data)));
-          }, 
-          child: const Text("View Property")
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => viewProperty(data: data)),
+            );
+          },
+          child: const Text(
+            'View Property',
+            style: TextStyle(fontSize: 20),
           ),
-
-          ElevatedButton(
-          onPressed: () async{
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
+          ),
+        ),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: () async {
             await track();
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TrackRentalRequests(data1: data1)));
-          }, 
-          child: const Text("Track Rental Requests")
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => TrackRentalRequests(data1: data1)),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            minimumSize: const Size(double.infinity, 50),
           ),
-
-          ElevatedButton(
-          onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => const ListProperty()));
-          print(uname);}, 
-          child: const Text("Address Complaints")
+          child: const Text(
+            'Track Rental Requests',
+            style: TextStyle(fontSize: 20),
           ),
-
-        ],
-      ),
-    );
+        ),
+      ],
+    ),
+  ),
+);
   }
 }

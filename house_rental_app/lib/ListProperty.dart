@@ -50,78 +50,102 @@ class _ListPropertyState extends State<ListProperty> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-
-          TextField(
-            decoration: const InputDecoration(
-              labelText: 'Location',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              setState(() {
-                locationQuery = value;
-              });
-            },
+  body: SingleChildScrollView(
+    padding: const EdgeInsets.all(16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const SizedBox(height: 16),
+        TextField(
+          decoration: InputDecoration(
+            labelText: 'Location',
+            border: OutlineInputBorder(),
           ),
-
-            TextField(
-            decoration: const InputDecoration(
-              labelText: 'Rent',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              setState(() {
-                rentBudget = int.parse(value);
-              });
-            },
+          onChanged: (value) {
+            setState(() {
+              locationQuery = value;
+            });
+          },
+        ),
+        SizedBox(height: 16),
+        TextField(
+          decoration: InputDecoration(
+            labelText: 'Rent',
+            border: OutlineInputBorder(),
           ),
-
-            TextField(
-            decoration: const InputDecoration(
-              labelText: 'Size',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (value) {
-              setState(() {
-                pSize = int.parse(value);
-              });
-            },
+          onChanged: (value) {
+            setState(() {
+              rentBudget = int.parse(value);
+            });
+          },
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          decoration: InputDecoration(
+            labelText: 'Size',
+            border: OutlineInputBorder(),
           ),
-
-
-          const Text('Amenities'),
-          Wrap(
-            spacing: 8,
-            children: availableAmenities.map((amenity) {
-              return FilterChip(
-                label: Text(amenity),
-                selected: amenities.contains(amenity),
-                onSelected: (bool selected) {
-                  setState(() {
-                    if (selected) {
-                      amenities.add(amenity);
-                    } else {
-                      amenities.remove(amenity);
-                    }
-                  });
-                },
-              );
-            }).toList(),
-          ),
-
-          ElevatedButton(
-              onPressed: () async {
-                await list(locationQuery, rentBudget, pSize, amenities);
-              
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ManageProperty()));
+          onChanged: (value) {
+            setState(() {
+              pSize = int.parse(value);
+            });
+          },
+        ),
+        const SizedBox(height: 32),
+        const Text(
+          'Amenities',
+          style: TextStyle(fontSize: 16),
+        ),
+        const SizedBox(height: 16),
+        Wrap(
+          spacing: 8,
+          children: availableAmenities.map((amenity) {
+            return FilterChip(
+              label: Text(amenity),
+              selected: amenities.contains(amenity),
+              onSelected: (bool selected) {
+                setState(() {
+                  if (selected) {
+                    amenities.add(amenity);
+                  } else {
+                    amenities.remove(amenity);
+                  }
+                });
               },
-              child: const Text('Add',
-              ),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 32),
+        
+        SizedBox(
+          height: 30,
+          width: 400,
+          child: ElevatedButton(
+          onPressed: () async {
+            await list(locationQuery, rentBudget, pSize, amenities);
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ManageProperty()),
+            );
+          },
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.purple.shade600),
+            foregroundColor: MaterialStateProperty.all(Colors.white),
+            shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),),
             ),
+            ),
+          child: const Text(
+            'Add',
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+        ),
+        
+      ],
+    ),
+  ),
+);
 
-        ],
-      ),
-    );
   }
 }
